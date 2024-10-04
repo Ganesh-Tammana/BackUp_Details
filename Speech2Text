@@ -1,0 +1,29 @@
+import React from 'react'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+export default function Speech() {
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+
+    const handleStartListening = ()=>{
+      SpeechRecognition.startListening({continuous:true});
+    }
+      
+    if (!browserSupportsSpeechRecognition) {
+      return <span>Browser doesn't support speech recognition.</span>;
+    }
+    
+    return (
+      <div className='space-y-3 flex flex-col'>
+        <p>Microphone: {listening ? 'on' : 'off'}</p>
+        <button onClick={handleStartListening}>Start</button>
+        <button onClick={SpeechRecognition.stopListening}>Stop</button>
+        <button onClick={resetTranscript}>Reset</button>
+        <p>{transcript ? transcript : "no data found"}</p>
+      </div>
+    )
+}
